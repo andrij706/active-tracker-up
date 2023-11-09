@@ -6,6 +6,15 @@ import supabase from './supabase/init';
 
 const appReady = ref(null)
 
+try{
+  onMounted(async () => {const {data: {session}} = await supabase.auth.getSession()
+  if(!session?.user){
+    appReady.value = true
+  }
+  })
+}catch(error){
+  console.log(error)
+}
 
 supabase.auth.onAuthStateChange((_, session) => {
   store.methods.setUser(session)
